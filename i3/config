@@ -133,6 +133,8 @@ bindsym $mod+Shift+8 move container to workspace 8; workspace 8
 bindsym $mod+Shift+9 move container to workspace 9; workspace 9
 bindsym $mod+Shift+0 move container to workspace 10; workspace 10
 
+bindsym $mod+p move workspace to output left
+
 
 
 #####################################################################################################################
@@ -141,6 +143,9 @@ bindsym $mod+Shift+0 move container to workspace 10; workspace 10
 
 # start dmenu
 bindsym $mod+shift+d exec --no-startup-id dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
+#bindsym shift+d exec exec rofi -show run -lines 15 -width 60 -opacity "60"
+bindsym $mod+shift+w exec rofi -show
+#bindsym $mod+shift+d exec --no-startup-id j4-dmenu-desktop
 
 # gmrun
 bindsym mod1+F2 exec --no-startup-id gmrun
@@ -219,6 +224,8 @@ floating_modifier $mod
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+# Use Mouse+$mod to drag floating windows
+floating_modifier $mod
 
 # change focus
 bindsym $mod+$left focus left
@@ -472,6 +479,9 @@ exec --no-startup-id clipit
 exec --no-startup-id conky -c ~/.config/i3/system-overview
 exec --no-startup-id conky -c ~/.config/i3/system-shortcuts
 
+#keyboard
+exec "setxkbmap -layout us,pt -option 'grp:alt_shift_toggle'"
+
 
 #####################################################################################################################
 #################                          applications keyboard shortcuts                          #################
@@ -492,6 +502,8 @@ bindsym Shift+$mod+x exec --no-startup-id cinnamon-settings
 # terminal
 bindsym $mod+Return exec --no-startup-id gnome-terminal;focus
 bindsym control+mod1+t exec --no-startup-id gnome-terminal; focus
+
+
 
 #System monitor
 bindsym control+Shift+Escape exec --no-startup-id xfce4-taskmanager;focus
@@ -589,7 +601,7 @@ bindsym $mod+w exec --no-startup-id exo-open --launch webbrowser;workspace 1;foc
 #bindsym Control+Print exec --no-startup-id xfce4-screenshooter
 #bindsym Control+Shift+Print exec --no-startup-id gnome-screenshot -i
 #bindsym shift+Print exec --no-startup-id shutter
-bindsym Print exec --no-startup-id gnome-screenshot -i
+#bindsym Print exec --no-startup-id gnome-screenshot -i
 
 
 
@@ -1047,6 +1059,7 @@ client.urgent           #d42121 #d42121 #f7f7f7 #d42121
 # bindsym button8 move right
 
 
+
 #####################################################################################################################
 #################                          keyboard control                                         #################
 #####################################################################################################################
@@ -1066,4 +1079,8 @@ client.urgent           #d42121 #d42121 #f7f7f7 #d42121
 # NOT USED
 
 # get the mouse out of the way with unclutter
-#exec --no-startup-id unclutter
+#exec --no-startup-id "unclutter -idle 99"
+
+# Screen Shots
+bindsym Print exec flameshot gui
+bindsym Control+Print exec flameshot full
