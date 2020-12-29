@@ -9,7 +9,7 @@
 
 
 ##################AM ADDONS############
-exec --no-startup-id compton --config ~/.config/compton.conf -b
+#exec --no-startup-id compton --config ~/.config/compton_testing.conf -b
 hide_edge_borders vertical
 
 #######################################
@@ -134,6 +134,7 @@ bindsym $mod+Shift+9 move container to workspace 9; workspace 9
 bindsym $mod+Shift+0 move container to workspace 10; workspace 10
 
 bindsym $mod+p move workspace to output left
+bindsym $mod+shift+p exec xrandr --output VIRTUAL1 --off --output eDP1 --primary --mode 1920x1080 --pos 1920x0 --rotate normal --output DP1 --off --output HDMI2 --off --output HDMI1 --off --output DP2 --mode 1920x1080 --pos 0x0 --rotate normal 
 
 
 
@@ -500,8 +501,12 @@ bindsym Shift+$mod+x exec --no-startup-id cinnamon-settings
 
 
 # terminal
-bindsym $mod+Return exec --no-startup-id gnome-terminal;focus
-bindsym control+mod1+t exec --no-startup-id gnome-terminal; focus
+#gnome terminal
+#bindsym $mod+Return exec --no-startup-id gnome-terminal;focus
+#bindsym control+mod1+t exec --no-startup-id gnome-terminal; focus
+
+bindsym $mod+Return exec --no-startup-id termite;focus
+bindsym control+mod1+t exec --no-startup-id termite; focus
 
 
 
@@ -784,7 +789,7 @@ popup_during_fullscreen smart
 # want it
 
 
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 1
 gaps inner 5
 gaps outer 15
 #smart_gaps on
@@ -845,7 +850,7 @@ mode "$mode_gaps_outer" {
 #####################################################################################################################
 
 #if you want transparency on non-focused windows, ...
-exec_always --no-startup-id compton --config ~/.config/i3/compton.conf
+exec_always --no-startup-id compton --config ~/.config/i3/compton_testing.conf
 
 
 
