@@ -1,2 +1,2 @@
-# RcFiles
-Personal Rc and config files
+# Dotfiles t440
+Personal dotfiles for t440
