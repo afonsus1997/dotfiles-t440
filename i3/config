@@ -143,7 +143,11 @@ bindsym $mod+shift+p exec xrandr --output VIRTUAL1 --off --output eDP1 --primary
 #####################################################################################################################
 
 # start dmenu
-bindsym $mod+shift+d exec --no-startup-id dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
+#default
+#bindsym $mod+shift+d exec --no-startup-id dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
+#manjaro
+bindsym $mod+d exec --no-startup-id dmenu_recency
+
 #bindsym shift+d exec exec rofi -show run -lines 15 -width 60 -opacity "60"
 bindsym $mod+shift+w exec rofi -show
 #bindsym $mod+shift+d exec --no-startup-id j4-dmenu-desktop
@@ -161,6 +165,10 @@ bindsym $mod+F11 exec --no-startup-id rofi -show run -fullscreen -font "Noto San
 bindsym $mod+F12 exec --no-startup-id rofi -show run -font "Noto Sans 13"
 
 
+# launch categorized menu
+bindsym $mod+shift+d exec --no-startup-id morc_menu
+
+
 
 #####################################################################################################################
 #################                          how to exit, logoff, suspend, ...                        #################
@@ -175,16 +183,33 @@ bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed 
 bindsym $mod+X mode "$mode_system"
 bindsym control+mod1+Delete mode "$mode_system"
 
-set $mode_system System (k) lock, (l) logout, (u) suspend, (h) hibernate, (r) reboot, (s) shutdown
-mode "$mode_system" {
-    bindsym k exec --no-startup-id ~/.config/i3/scripts/i3exit.sh lock, mode "default"
-    bindsym l exec --no-startup-id ~/.config/i3/scripts/i3exit.sh logout, mode "default"
-    bindsym u exec --no-startup-id ~/.config/i3/scripts/i3exit.sh suspend, mode "default"
-    bindsym h exec --no-startup-id ~/.config/i3/scripts/i3exit.sh hibernate, mode "default"
-    bindsym r exec --no-startup-id ~/.config/i3/scripts/i3exit.sh reboot, mode "default"
-    bindsym s exec --no-startup-id ~/.config/i3/scripts/i3exit.sh shutdown, mode "default"
+#set $mode_system System (k) lock, (l) logout, (u) suspend, (h) hibernate, (r) reboot, (s) shutdown
+#mode "$mode_system" {
+#    bindsym k exec --no-startup-id ~/.config/i3/scripts/i3exit.sh lock, mode "default"
+#    bindsym l exec --no-startup-id ~/.config/i3/scripts/i3exit.sh logout, mode "default"
+#    bindsym u exec --no-startup-id ~/.config/i3/scripts/i3exit.sh suspend, mode "default"
+#    bindsym h exec --no-startup-id ~/.config/i3/scripts/i3exit.sh hibernate, mode "default"
+#    bindsym r exec --no-startup-id ~/.config/i3/scripts/i3exit.sh reboot, mode "default"
+#    bindsym s exec --no-startup-id ~/.config/i3/scripts/i3exit.sh shutdown, mode "default"
 
-    # back to normal: Enter or Escape
+#    # back to normal: Enter or Escape
+#    bindsym Return mode "default"
+#    bindsym Escape mode "default"
+#}
+
+#manjaro
+
+set $mode_system (k) lock, (l) logout, (u) suspend, (h) hibernate, (r) reboot, (s) shutdown
+mode "$mode_system" {
+    bindsym k exec --no-startup-id i3exit lock, mode "default"
+    bindsym u exec --no-startup-id i3exit suspend, mode "default"
+    bindsym u exec --no-startup-id i3exit switch_user, mode "default"
+    bindsym l exec --no-startup-id i3exit logout, mode "default"
+    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
+    bindsym r exec --no-startup-id i3exit reboot, mode "default"
+    bindsym s exec --no-startup-id i3exit shutdown, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
@@ -285,10 +310,10 @@ for_window [urgent=latest] focus
 default_orientation horizontal
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+h split h; exec notify-send 'tile horizontally'
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+v split v;exec notify-send 'tile vertically'
 
 # enter fullscreen mode for the focused container
 # Super + F in arcolinux is execute thunar
@@ -469,6 +494,11 @@ exec_always --no-startup-id numlockx on
 # volume
 #exec --no-startup-id pasystray
 exec --no-startup-id volumeicon
+#other volumes
+bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
+#exec --no-startup-id pulseaudio
+#exec --no-startup-id pa-applet
+#bindsym $mod+Ctrl+m exec pavucontrol
 
 #variety
 exec --no-startup-id variety
@@ -482,6 +512,16 @@ exec --no-startup-id conky -c ~/.config/i3/system-shortcuts
 
 #keyboard
 exec "setxkbmap -layout us,pt -option 'grp:alt_shift_toggle'"
+
+#manjaro toolbox
+bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
+
+#open file browser
+bindsym $mod+Shift+Enter exec pcmanfm
+
+#manjaro kill
+bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
+
 
 
 #####################################################################################################################
@@ -505,8 +545,8 @@ bindsym Shift+$mod+x exec --no-startup-id cinnamon-settings
 #bindsym $mod+Return exec --no-startup-id gnome-terminal;focus
 #bindsym control+mod1+t exec --no-startup-id gnome-terminal; focus
 
-bindsym $mod+Return exec --no-startup-id termite;focus
-bindsym control+mod1+t exec --no-startup-id termite; focus
+bindsym $mod+Return exec --no-startup-id termite -e /bin/zsh;focus
+bindsym control+mod1+t exec --no-startup-id termite -e /bin/zsh; focus
 
 
 
@@ -713,6 +753,11 @@ bindsym mod1+Down exec --no-startup-id variety --resume
 bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer -D pulse sset Master '5%+'"
 bindsym XF86AudioLowerVolume exec --no-startup-id "amixer -D pulse sset Master '5%-'"
 bindsym XF86AudioMute exec --no-startup-id "amixer -D pulse set Master toggle"
+
+#bindsym XF86AudioLowerVolume exec pulseaudio-ctl down # 5%
+#bindsym XF86AudioRaiseVolume exec pulseaudio-ctl up
+#bindsym XF86AudioMicMute exec pulseaudio-ctl mute-input #toggle
+
 #https://github.com/acrisci/playerctl/
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next
@@ -730,7 +775,8 @@ bindsym XF86AudioStop exec --no-startup-id playerctl stop
 
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 # decrease screen brightness
-
+#bindsym XF86BrightnessDown exec xbacklight -dec 10
+#bindsym XF86BrightnessUp exec xbacklight -inc 10
 
 
 #####################################################################################################################
@@ -850,8 +896,9 @@ mode "$mode_gaps_outer" {
 #####################################################################################################################
 
 #if you want transparency on non-focused windows, ...
-exec_always --no-startup-id compton --config ~/.config/i3/compton_testing.conf
-
+#exec_always --no-startup-id compton --config ~/.config/i3/compton_testing.conf
+#manjaro
+exec_always --no-startup-id compton --config ~/.i3/compton_testing.conf
 
 
 
@@ -886,7 +933,8 @@ bar {
     # Second one is the standard statusbar with my personal settings
 
 	#status_command i3status
-	status_command i3status -c ~/.config/i3/i3status.conf
+	#status_command i3status -c ~/.config/i3/i3status.conf
+	status_command i3status -c ~/.i3/i3status.conf
 
 
 
@@ -1053,7 +1101,7 @@ client.urgent           #d42121 #d42121 #f7f7f7 #d42121
 # bindsym --release button2 kill
 
 # The middle button and a modifer over any part of the window kills the window
-# bindsym --whole-window $mod+button2 kill
+# bindsym --whole-window $mod+button2 killmo`
 
 # The right button toggles floating
 # bindsym button3 floating toggle
@@ -1089,3 +1137,10 @@ client.urgent           #d42121 #d42121 #f7f7f7 #d42121
 # Screen Shots
 bindsym Print exec flameshot gui
 bindsym Control+Print exec flameshot full
+
+#for vivado
+exec export _JAVA_AWT_WM_NONREPARENTING=1
+
+exec blueman-applet
+
+exec qxkb

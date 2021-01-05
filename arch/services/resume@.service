@@ -1,0 +1,21 @@
+#/etc/systemd/system/resume@.service
+#this is a service to lock the computer when it goes to sleep/lock
+#to enable it:
+#first:
+#systemctl disable resume@${USER}.service
+#Then add the new file & remove any others and reload the configuration:
+#systemctl daemon-reload
+#Finally re-enable the unit:
+#systemctl enable resume@${USER}.service
+
+
+[Unit]
+Description=Lock the screen on resume
+
+[Service]
+User=%I
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/blurlock
+
+[Install]
+WantedBy=suspend.target sleep.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target
