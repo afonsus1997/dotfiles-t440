@@ -1,3 +1,8 @@
+zmodload zsh/zprof
+
+
+#export TERM=xterm-color
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -9,6 +14,8 @@ export ZSH="/home/afonsom/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="AM"
+
+autoload zcalc
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -62,13 +69,15 @@ ZSH_THEME="AM"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
+#source $HOME/.oh-my-zsh/plugins/calc/calc.plugin.zsh
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions vscode calc)
+plugins=(git zsh-autosuggestions vscode calc)
+#disabled: zsh-syntax-highlighting
 
 source $ZSH/oh-my-zsh.sh
 
@@ -197,6 +206,10 @@ rangercd () {
 }
 # bindkey -s '^o' 'rangercd\n'
 
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
 
 ### Helper Aliases
 
@@ -219,20 +232,33 @@ alias logs="find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1
 ### AM Aliases
 
 alias lcc='/usr/local/versat/lcc/lcc'
-alias codecomposer='/home/afonsom/ti/ccs920/ccs/eclipse/ccstudio'
+#alias codecomposer='/home/afonsom/ti/ccs920/ccs/eclipse/ccstudio'
 alias flatsatpipe='ssh -NTL 6969:localhost:6969 egse-flatsat'
 alias safesatpipe='ssh -NTL 6969:localhost:6969 egse-safesat'
 alias vpnup='sudo systemctl start wg-quick@wg0 && sudo systemctl status wg-quick@wg0'
 alias vpndown='sudo systemctl stop wg-quick@wg0'
-alias ISTSATscreen='~/ISTSAT-screenlayout.sh'
-alias satrepo='cd ~/Github/ISTSAT-Software'
-alias epsvars='while true; do gsctl data-req EPS ALL; sleep 5; done'
+alias lnexample='echo ln -s /path/to/file /path/to/symlink'
+alias manjaromouse='sudo modprobe -r psmouse && sudo modprobe -a psmouse'
+alias mixer='alsamixer'
+alias srcvivado='source /opt/Xilinx/Vivado/2020.2/settings64.sh'
 
+### ISTSAT stuff
+
+alias flash-obc='PROJECT=OBCMain TARGET_ARCH=ARCH_OBC make flashP'
+alias flash-eps='PROJECT=EPSMain TARGET_ARCH=ARCH_EPS make flashP'
+alias flash-com='PROJECT=COMMain TARGET_ARCH=ARCH_COM make flashP'
+alias flash-pl='PROJECT=PLMain TARGET_ARCH=ARCH_PLM4 make flashP'
+alias sat='cd ~/Github/ISTSAT-Software'
+alias ISTSATscreen='~/ISTSAT-screenlayout.sh'
+source ~/.zshrc_gsctl.sh
+#eval(_GSCTL_COMPLETE=source_zsh gsctl)
 
 ### Others
 
 #export hostname
 export HOSTNAME
+
+export no_proxy=localhost,127.0.0.1,web,webster,xinc,author.xilinx.com,jira.xilinx.com,*.xilinx.com
 
 pip3.7() {
 	python3.7 -m pip "$@"
@@ -249,3 +275,8 @@ fi
 #add fzf search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+xset r rate 220 40
+
+#Capsim eviroment
+export CAPSIM=/opt/Capsim_V6
+export LD_LIBRARY_PATH=$CAPSIM/LIBS
